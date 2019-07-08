@@ -79,8 +79,10 @@ static void compile(char *file, char *def) {
 			cmderror("no such file: %s", file);
 		Basefile = File = file;
 		if (!O_testonly) {
+#if 0
 			if ((Outfile = fopen(ofile, "r")) != NULL)
 				cmderror("will not overwrite: %s", ofile);
+#endif
 			if ((Outfile = fopen(ofile, "w")) == NULL)
 				cmderror("cannot create file: %s", ofile);
 		}
@@ -140,11 +142,11 @@ static int concat(int k, char *buf, char *s) {
 
 static void link(void) {
 	int	i, k;
-	char	cmd[TEXTLEN+1], *msg;
+	char	cmd[TEXTLEN+1];
 	char	cmd2[TEXTLEN+1];
 
 	if (strlen(O_outfile) + strlen(LDCMD) + strlen(SCCDIR)*2 >= TEXTLEN)
-		cmderror(msg, NULL);
+		cmderror("linker path too long", NULL);
 	sprintf(cmd, LDCMD, O_outfile, SCCDIR);
 	k = strlen(cmd);
 	for (i=0; i<Nf; i++)
