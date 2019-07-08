@@ -33,9 +33,21 @@ void genraw(char *s) {
 	fprintf(Outfile, "%s", s);
 }
 
+void genchar(char c) {
+	if (NULL == Outfile) return;
+	fprintf(Outfile, "%c", c);
+}
+
 void gen(char *s) {
 	if (NULL == Outfile) return;
 	fprintf(Outfile, "\t%s\n", s);
+}
+
+void vgen(char *s, int n) {
+	if (NULL == Outfile) return;
+	fputc('\t', Outfile);
+	fprintf(Outfile, s, n);
+	fputc('\n', Outfile);
 }
 
 void ngen(char *s, char *inst, int n) {
@@ -75,7 +87,7 @@ void sgen(char *s, char *inst, char *s2) {
 
 void genlab(int id) {
 	if (NULL == Outfile) return;
-	fprintf(Outfile, "%c%d:", LPREFIX, id);
+	fprintf(Outfile, "%c%d:\n", LPREFIX, id);
 }
 
 char *labname(int id) {
@@ -118,7 +130,7 @@ void genpostlude(void) {
 
 void genname(char *name) {
 	genraw(gsym(name));
-	genraw(":");
+	genraw(":\n");
 }
 
 void genpublic(char *name) {
@@ -432,9 +444,10 @@ void gendefp(int v) {
 	cgdefp(v);
 }
 
+// generate string definition
 void gendefs(char *s, int len) {
+#if 0
 	int	i;
-
 	gendata();
 	for (i=1; i<len-1; i++) {
 		if (isalnum(s[i]))
@@ -442,6 +455,11 @@ void gendefs(char *s, int len) {
 		else
 			cgdefb(s[i]);
 	}
+#else
+	gendata();
+  // +1 and -2 to skip quotes ""
+  cgdefs(s + 1, len - 2);
+#endif
 }
 
 void gendefw(int v) {

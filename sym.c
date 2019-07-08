@@ -85,7 +85,9 @@ static void defglob(char *name, int prim, int type, int size, int val,
 {
 	if (TCONSTANT == type || TFUNCTION == type) return;
 	gendata();
+#if 0
 	if (CPUBLIC == scls) genpublic(name);
+#endif
 	if (init && TARRAY == type)
 		return;
 	if (TARRAY != type) genname(name);

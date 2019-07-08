@@ -70,6 +70,7 @@ void	genpublic(char *name);
 void	genpush(void);
 void	genpushlit(int n);
 void	genraw(char *s);
+void	genchar(char c);
 void	genscale(void);
 void	genscale2(void);
 void	genshl(int swap);
@@ -94,8 +95,11 @@ void	lparen(void);
 void	match(int t, char *what);
 char	*newfilename(char *name, int sfx);
 int	next(void);
+
+void	vgen(char *s, int n);
 void	ngen(char *s, char *inst, int n);
 void	ngen2(char *s, char *inst, int n, int a);
+
 int	objsize(int prim, int type, int size);
 void	playmac(char *s);
 int	pointerto(int prim);
