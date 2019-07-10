@@ -7,6 +7,14 @@ NASM = '../tools/nasm/nasm.exe'
 LINK = '../tools/golink/GoLink.exe'
 
 
+expected = {
+    'test001' : 0,
+    'test002' : 3,
+    'test003' : 9,
+}
+
+
+
 tried = set()
 passed = set()
 
@@ -14,7 +22,12 @@ passed = set()
 def do_run(base, path):
     ret = subprocess.call([path])
     print '{0} -> {1}'.format(path, ret)
-    passed.add(base)
+
+    if base in expected:
+        if expected[base] == ret:
+            passed.add(base)
+        else:
+            print 'does not match expected value'
 
 
 def do_link(base, path):

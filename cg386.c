@@ -247,17 +247,25 @@ void cgdefl(int v) { lgen("%s %c%d", "dw", v); }
 void cgdefc(int c) { ngen("%s '%c'", "db", c); }
 void cgdefs(char *s, int len) {
   int i;
-  genraw("\tdb \"");
+  genraw("\tdb ");
   for (i = 0; i < len; ++i) {
-
+#if 0
     if (s[i] < 32) {
       // XXX: handle escape chars here!
     }
     else {
       genchar(s[i]);
     }
+#else
+    if (i > 0) {
+      fprintf(Outfile, ", %02xh", s[i]);
+    }
+    else {
+      fprintf(Outfile, "%02xh", s[i]);
+    }
+#endif
   }
-  genraw("\"\n");
+  genraw("\n");
 }
 
 // ?
