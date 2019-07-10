@@ -99,9 +99,13 @@ char *labname(int id) {
 
 char *gsym(char *s) {
 	static char	name[NAMELEN+2];
-
 	name[0] = PREFIX;
 	name[1] = 0;
+
+  if (strcmp(s, "Start") == 0) {
+    name[0] = 0;
+  }
+
 	strcat(name, s);
 	return name;
 }

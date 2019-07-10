@@ -17,3 +17,5 @@ Note that GoLink expects object files to have the .obj extension.
 ```
 GoLink.exe  /console /entry _start <a.obj> <b.obj> ...
 ```
+
+The /entry option doesnt seem to work so the entry should be `Start`.

@@ -170,6 +170,7 @@ void cgincgb(char *s) { sgen("%s %s", "inc", s); }
 void cgdecgb(char *s) { sgen("%s %s", "dec", s); }
 
 void cgbr(char *how, int n) {
+  // this looks damned inefficient
   int lab;
   lab = label();
   gen("or eax, eax");   // why not test?
@@ -179,6 +180,7 @@ void cgbr(char *how, int n) {
 }
 void cgbrtrue(int n) { cgbr("jz", n); }
 void cgbrfalse(int n) { cgbr("jnz", n); }
+
 void cgjump(int n) { lgen("%s %c%d", "jmp", n); }
 void cgldswtch(int n) { lgen("%s edx, %c%d", "mov", n); }
 
@@ -247,7 +249,13 @@ void cgdefs(char *s, int len) {
   int i;
   genraw("\tdb \"");
   for (i = 0; i < len; ++i) {
-    genchar(s[i]);
+
+    if (s[i] < 32) {
+      // XXX: handle escape chars here!
+    }
+    else {
+      genchar(s[i]);
+    }
   }
   genraw("\"\n");
 }

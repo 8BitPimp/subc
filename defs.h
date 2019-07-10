@@ -8,7 +8,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define PREFIX		'C'
+#define PREFIX		'_'
 #define LPREFIX		'L'
 
 #ifndef SCCDIR
