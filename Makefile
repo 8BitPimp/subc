@@ -1,4 +1,4 @@
-CC=	pcc
+CC=	gcc
 CFLAGS=	-O
 LINT=	gcc -c -o /dev/null -ansi -pedantic -Wall 
 OBJS=	cexpr.o cg386.o decl.o error.o expr.o gen.o main.o misc.o \
@@ -28,7 +28,7 @@ libc:
 	make -f lib/Makefile
 
 lib/crt0.o:	lib/crt0.s
-	as -o lib/crt0.o lib/crt0.s
+	as -o lib/crt0.o lib/crt0.s --32
 
 boot:	$(FILES)
 	./scc $(FILES)

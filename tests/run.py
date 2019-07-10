@@ -1,10 +1,19 @@
 import os
 import subprocess
+import sys
 
 
-SUBC = '../build/Debug/subc.exe'
-NASM = '../tools/nasm/nasm.exe'
-LINK = '../tools/golink/GoLink.exe'
+is_linux = (sys.platform == "linux" or sys.platform == "linux2")
+
+
+if is_linux:
+  SUBC = '../build/subc'
+  NASM = 'nasm'
+  LINK = 'ld'
+else:
+  SUBC = '../build/Debug/subc.exe'
+  NASM = '../tools/nasm/nasm.exe'
+  LINK = '../tools/golink/GoLink.exe'
 
 
 expected = {
@@ -15,32 +24,43 @@ expected = {
 }
 
 
-
 tried = set()
 passed = set()
 
 
 def do_run(base, path):
-    ret = subprocess.call([path])
-    print '{0} -> {1}'.format(path, ret)
-
-    if base in expected:
-        if expected[base] == ret:
-            passed.add(base)
-        else:
-            print 'does not match expected value'
+    try:
+      ret = subprocess.call([path])
+      print '{0} -> {1}'.format(path, ret)
+      if base in expected:
+          if expected[base] == ret:
+              passed.add(base)
+          else:
+              print '{0} did not return expected value'.format(path)
+    except OSError:
+      print 'failed to execute {0}'.format(path)
 
 
 def do_link(base, path):
-    out = base + '.exe'
-    if 0 == subprocess.call([LINK, '/console', '/ni', path]):
-        do_run(base, out)
+    if is_linux:
+      out = './' + base
+      if 0 == subprocess.call([LINK, '-e', 'Start', '-o', base, path]):
+          do_run(base, out)
+    else:
+      out = base + '.exe'
+      if 0 == subprocess.call([LINK, '/console', '/ni', path]):
+          do_run(base, out)
 
 
 def do_assemble(base, path):
-    out = base + '.obj'
-    if 0 == subprocess.call([NASM, '-o', out, '-f', 'win32', path]):
-        do_link(base, out)
+    if is_linux:
+      out = base + '.o'
+      if 0 == subprocess.call([NASM, '-o', out, '-f', 'elf32', path]):
+          do_link(base, out)
+    else:
+      out = base + '.obj'
+      if 0 == subprocess.call([NASM, '-o', out, '-f', 'win32', path]):
+          do_link(base, out)
 
 
 def do_compile(base, path):

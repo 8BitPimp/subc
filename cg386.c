@@ -270,4 +270,5 @@ void cgdefs(char *s, int len) {
 }
 
 // ?
-void cgbss(char *s, int z) { ngen(".lcomm %s,%d", s, z); }
+void cgbss(char *s, int z) { ngen("common %s %d", s, z); }
+

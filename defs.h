@@ -15,8 +15,8 @@
  #define SCCDIR		"."
 #endif
 
-#define ASCMD		"as -o %s %s"
-#define LDCMD		"ld -o %s %s/lib/crt0.o"
+#define ASCMD		"nasm -o %s %s -f elf32"
+#define LDCMD		"ld -m elf_i386 -o %s %s/lib/crt0.o"
 #define SCCLIBC		"%s/lib/libscc.a"
 #define SYSLIBC		"/usr/lib/libc.a"
 
