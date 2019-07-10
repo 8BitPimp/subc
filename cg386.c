@@ -132,7 +132,8 @@ void cgbool(void) {
 #else
   // shorter and more readable
   gen("test eax, eax");
-  gen("setnz eax");
+  gen("setnz al");
+  gen("and eax, 1");
 #endif
 }
 
